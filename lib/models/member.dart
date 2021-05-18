@@ -7,27 +7,27 @@ part 'member.g.dart';
 @JsonSerializable()
 class Member extends CollectionItem {
   @JsonKey(required: true)
-  final String id;
+  final String? id;
   @JsonKey(defaultValue: 'member')
-  String type;
+  String? type;
   @JsonKey(name: 'notification_level')
-  String notificationLevel;
+  String? notificationLevel;
   @JsonKey(name: 'company_id')
-  String companyId;
+  String? companyId;
   @JsonKey(name: 'workspace_id')
-  String workspaceId;
+  String? workspaceId;
   @JsonKey(name: 'channel_id')
-  String channelId;
+  String? channelId;
   @JsonKey(name: 'user_id')
-  String userId;
-  String email;
+  String? userId;
+  String? email;
   @JsonKey(
     fromJson: boolToInt,
     toJson: boolToInt,
   )
-  int favorite;
+  int? favorite;
   @JsonKey(name: 'is_selected', defaultValue: 0)
-  int isSelected;
+  int? isSelected;
 
   Member(
     this.id,

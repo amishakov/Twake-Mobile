@@ -6,13 +6,13 @@ part 'user.g.dart';
 @JsonSerializable()
 class User with EquatableMixin {
   @JsonKey(required: true)
-  final String id;
-  String username;
+  final String? id;
+  String? username;
   @JsonKey(name: 'firstname')
-  String firstName;
+  String? firstName;
   @JsonKey(name: 'lastname')
-  String lastName;
-  String thumbnail;
+  String? lastName;
+  String? thumbnail;
 
   User({this.id, this.username});
 
@@ -21,5 +21,5 @@ class User with EquatableMixin {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   @override
-  List<Object> get props => [id, username, firstName, lastName, thumbnail];
+  List<Object?> get props => [id, username, firstName, lastName, thumbnail];
 }

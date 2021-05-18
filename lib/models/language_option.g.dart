@@ -8,8 +8,8 @@ part of 'language_option.dart';
 
 LanguageOption _$LanguageOptionFromJson(Map<String, dynamic> json) {
   return LanguageOption(
-    value: json['value'] as String,
-    title: json['title'] as String,
+    value: json['value'] as String?,
+    title: json['title'] as String?,
   );
 }
 

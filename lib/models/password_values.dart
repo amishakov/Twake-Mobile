@@ -6,8 +6,8 @@ part 'password_values.g.dart';
 @JsonSerializable()
 class PasswordValues {
   const PasswordValues({
-    @required this.oldPassword,
-    @required this.newPassword,
+    required this.oldPassword,
+    required this.newPassword,
   });
 
   @JsonKey(name: 'old', defaultValue: '')

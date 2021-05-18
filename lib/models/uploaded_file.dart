@@ -4,18 +4,18 @@ part 'uploaded_file.g.dart';
 
 @JsonSerializable()
 class UploadedFile {
-  final String id;
+  final String? id;
 
   @JsonKey(name: 'name')
-  final String filename;
+  final String? filename;
 
-  final String preview;
+  final String? preview;
 
-  final String download;
+  final String? download;
 
-  final String file;
+  final String? file;
 
-  final int size;
+  final int? size;
 
   const UploadedFile({
     this.id,

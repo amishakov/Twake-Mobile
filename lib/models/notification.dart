@@ -5,15 +5,15 @@ part 'notification.g.dart';
 @JsonSerializable()
 class MessageNotification extends NotificationData {
   @JsonKey(name: 'company_id')
-  final String companyId;
+  final String? companyId;
   @JsonKey(name: 'workspace_id')
-  final String workspaceId;
+  final String? workspaceId;
   @JsonKey(name: 'channel_id')
-  final String channelId;
+  final String? channelId;
   @JsonKey(name: 'thread_id')
-  final String threadId;
+  final String? threadId;
   @JsonKey(name: 'message_id')
-  final String messageId;
+  final String? messageId;
 
   MessageNotification({
     this.companyId,
@@ -36,17 +36,17 @@ abstract class NotificationData {
 @JsonSerializable()
 class SocketChannelUpdateNotification extends NotificationData {
   @JsonKey(required: true, name: 'id')
-  final String channelId;
+  final String? channelId;
   @JsonKey(name: 'workspace_id')
-  final String workspaceId;
+  final String? workspaceId;
   @JsonKey(name: 'company_id')
-  final String companyId;
-  final String icon;
-  final String name;
-  final String description;
-  final String visibility;
+  final String? companyId;
+  final String? icon;
+  final String? name;
+  final String? description;
+  final String? visibility;
   @JsonKey(name: 'last_message')
-  final Map<String, dynamic> lastMessage;
+  final Map<String, dynamic>? lastMessage;
 
   SocketChannelUpdateNotification({
     this.channelId,
@@ -69,11 +69,11 @@ class SocketChannelUpdateNotification extends NotificationData {
 @JsonSerializable()
 class SocketDirectUpdateNotification extends NotificationData {
   @JsonKey(name: 'id')
-  final String directId;
+  final String? directId;
   @JsonKey(name: 'last_activity')
-  final int lastActivity;
+  final int? lastActivity;
   @JsonKey(name: 'last_message')
-  final Map<String, dynamic> lastMessage;
+  final Map<String, dynamic>? lastMessage;
 
   const SocketDirectUpdateNotification({
     this.directId,
@@ -88,7 +88,7 @@ class SocketDirectUpdateNotification extends NotificationData {
 }
 
 class SocketDirectRemovedNotification extends NotificationData {
-  final String directId;
+  final String? directId;
 
   const SocketDirectRemovedNotification({this.directId});
 }
@@ -96,11 +96,11 @@ class SocketDirectRemovedNotification extends NotificationData {
 @JsonSerializable()
 class SocketMessageUpdateNotification extends NotificationData {
   @JsonKey(required: true, name: 'channel_id')
-  final String channelId;
+  final String? channelId;
   @JsonKey(name: 'thread_id')
-  final String threadId;
+  final String? threadId;
   @JsonKey(name: 'message_id')
-  final String messageId;
+  final String? messageId;
 
   SocketMessageUpdateNotification({
     this.channelId,
@@ -118,15 +118,15 @@ class SocketMessageUpdateNotification extends NotificationData {
 @JsonSerializable()
 class WhatsNewItem extends NotificationData {
   @JsonKey(required: true, name: 'company_id')
-  final String companyId;
+  final String? companyId;
   @JsonKey(required: true, name: 'workspace_id')
-  final String workspaceId;
+  final String? workspaceId;
   @JsonKey(required: true, name: 'channel_id')
-  final String channelId;
+  final String? channelId;
   @JsonKey(name: 'thread_id')
-  final String threadId;
+  final String? threadId;
   @JsonKey(name: 'message_id')
-  final String messageId;
+  final String? messageId;
 
   WhatsNewItem({
     this.companyId,

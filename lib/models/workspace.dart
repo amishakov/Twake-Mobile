@@ -7,29 +7,29 @@ part 'workspace.g.dart';
 @JsonSerializable()
 class Workspace extends CollectionItem {
   @JsonKey(required: true)
-  final String id;
+  final String? id;
 
   @JsonKey(required: true)
-  String name;
+  String? name;
 
   @JsonKey(required: true, name: 'company_id')
-  final String companyId;
+  final String? companyId;
 
-  final String color;
+  final String? color;
 
-  String logo;
+  String? logo;
 
   @JsonKey(name: 'user_last_access')
-  int userLastAccess;
+  int? userLastAccess;
 
   @JsonKey(name: 'total_members')
-  int totalMembers;
+  int? totalMembers;
 
   @JsonKey(name: 'is_selected', defaultValue: 0)
-  int isSelected;
+  int? isSelected;
 
   @JsonKey(defaultValue: <String>[])
-  List<String> permissions;
+  List<String>? permissions;
 
   // @JsonKey(name: 'notification_rooms')
   // List<String> notificationRooms;

@@ -8,8 +8,8 @@ part of 'password_values.dart';
 
 PasswordValues _$PasswordValuesFromJson(Map<String, dynamic> json) {
   return PasswordValues(
-    oldPassword: json['old'] as String ?? '',
-    newPassword: json['new'] as String ?? '',
+    oldPassword: json['old'] as String? ?? '',
+    newPassword: json['new'] as String? ?? '',
   );
 }
 

@@ -5,7 +5,7 @@ part 'account_field.g.dart';
 
 @JsonSerializable()
 class AccountField {
-  AccountField({@required this.isReadonly, @required this.value});
+  AccountField({required this.isReadonly, required this.value});
 
   @JsonKey(name: 'readonly', defaultValue: false)
   bool isReadonly;

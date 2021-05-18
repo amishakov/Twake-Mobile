@@ -9,12 +9,12 @@ part of 'user.dart';
 User _$UserFromJson(Map<String, dynamic> json) {
   $checkKeys(json, requiredKeys: const ['id']);
   return User(
-    id: json['id'] as String,
-    username: json['username'] as String,
+    id: json['id'] as String?,
+    username: json['username'] as String?,
   )
-    ..firstName = json['firstname'] as String
-    ..lastName = json['lastname'] as String
-    ..thumbnail = json['thumbnail'] as String;
+    ..firstName = json['firstname'] as String?
+    ..lastName = json['lastname'] as String?
+    ..thumbnail = json['thumbnail'] as String?;
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{

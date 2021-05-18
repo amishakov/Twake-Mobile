@@ -8,27 +8,27 @@ export 'package:twake/utils/bool_int.dart';
 
 abstract class BaseChannel extends CollectionItem {
   @JsonKey(required: true, nullable: false)
-  String id;
+  String? id;
 
   @JsonKey(required: true)
-  String name;
+  String? name;
 
   @JsonKey(defaultValue: '👽')
-  String icon;
+  String? icon;
 
-  String description;
+  String? description;
 
   @JsonKey(name: 'members_count', defaultValue: 0)
-  int membersCount;
+  int? membersCount;
 
   @JsonKey(name: 'last_activity', defaultValue: 0)
-  int lastActivity;
+  int? lastActivity;
 
   @JsonKey(name: 'last_message', defaultValue: {})
-  Map<String, dynamic> lastMessage;
+  Map<String, dynamic>? lastMessage;
 
   @JsonKey(name: 'user_last_access', defaultValue: 0)
-  int lastAccess;
+  int? lastAccess;
 
   @JsonKey(
     name: 'has_unread',
@@ -36,16 +36,16 @@ abstract class BaseChannel extends CollectionItem {
     fromJson: boolToInt,
     toJson: boolToInt,
   )
-  int hasUnread;
+  int? hasUnread;
 
   @JsonKey(name: 'messages_unread', defaultValue: 0)
-  int messagesUnread;
+  int? messagesUnread;
 
   @JsonKey(name: 'is_selected', defaultValue: 0)
-  int isSelected;
+  int? isSelected;
 
   @JsonKey(defaultValue: <String>[])
-  List<String> permissions;
+  List<String>? permissions;
 
   BaseChannel({
     this.id,

@@ -8,11 +8,11 @@ part of 'notification.dart';
 
 MessageNotification _$MessageNotificationFromJson(Map<String, dynamic> json) {
   return MessageNotification(
-    companyId: json['company_id'] as String,
-    workspaceId: json['workspace_id'] as String,
-    channelId: json['channel_id'] as String,
-    threadId: json['thread_id'] as String,
-    messageId: json['message_id'] as String,
+    companyId: json['company_id'] as String?,
+    workspaceId: json['workspace_id'] as String?,
+    channelId: json['channel_id'] as String?,
+    threadId: json['thread_id'] as String?,
+    messageId: json['message_id'] as String?,
   );
 }
 
@@ -30,14 +30,14 @@ SocketChannelUpdateNotification _$SocketChannelUpdateNotificationFromJson(
     Map<String, dynamic> json) {
   $checkKeys(json, requiredKeys: const ['id']);
   return SocketChannelUpdateNotification(
-    channelId: json['id'] as String,
-    workspaceId: json['workspace_id'] as String,
-    companyId: json['company_id'] as String,
-    name: json['name'] as String,
-    description: json['description'] as String,
-    icon: json['icon'] as String,
-    visibility: json['visibility'] as String,
-    lastMessage: json['last_message'] as Map<String, dynamic>,
+    channelId: json['id'] as String?,
+    workspaceId: json['workspace_id'] as String?,
+    companyId: json['company_id'] as String?,
+    name: json['name'] as String?,
+    description: json['description'] as String?,
+    icon: json['icon'] as String?,
+    visibility: json['visibility'] as String?,
+    lastMessage: json['last_message'] as Map<String, dynamic>?,
   );
 }
 
@@ -57,9 +57,9 @@ Map<String, dynamic> _$SocketChannelUpdateNotificationToJson(
 SocketDirectUpdateNotification _$SocketDirectUpdateNotificationFromJson(
     Map<String, dynamic> json) {
   return SocketDirectUpdateNotification(
-    directId: json['id'] as String,
-    lastActivity: json['last_activity'] as int,
-    lastMessage: json['last_message'] as Map<String, dynamic>,
+    directId: json['id'] as String?,
+    lastActivity: json['last_activity'] as int?,
+    lastMessage: json['last_message'] as Map<String, dynamic>?,
   );
 }
 
@@ -75,9 +75,9 @@ SocketMessageUpdateNotification _$SocketMessageUpdateNotificationFromJson(
     Map<String, dynamic> json) {
   $checkKeys(json, requiredKeys: const ['channel_id']);
   return SocketMessageUpdateNotification(
-    channelId: json['channel_id'] as String,
-    threadId: json['thread_id'] as String,
-    messageId: json['message_id'] as String,
+    channelId: json['channel_id'] as String?,
+    threadId: json['thread_id'] as String?,
+    messageId: json['message_id'] as String?,
   );
 }
 
@@ -93,11 +93,11 @@ WhatsNewItem _$WhatsNewItemFromJson(Map<String, dynamic> json) {
   $checkKeys(json,
       requiredKeys: const ['company_id', 'workspace_id', 'channel_id']);
   return WhatsNewItem(
-    companyId: json['company_id'] as String,
-    workspaceId: json['workspace_id'] as String,
-    channelId: json['channel_id'] as String,
-    threadId: json['thread_id'] as String,
-    messageId: json['message_id'] as String,
+    companyId: json['company_id'] as String?,
+    workspaceId: json['workspace_id'] as String?,
+    channelId: json['channel_id'] as String?,
+    threadId: json['thread_id'] as String?,
+    messageId: json['message_id'] as String?,
   );
 }
 

@@ -8,7 +8,7 @@ part of 'password_field.dart';
 
 PasswordField _$PasswordFieldFromJson(Map<String, dynamic> json) {
   return PasswordField(
-    isReadonly: json['readonly'] as bool ?? false,
+    isReadonly: json['readonly'] as bool? ?? false,
     value: json['value'] == null
         ? null
         : PasswordValues.fromJson(json['value'] as Map<String, dynamic>),

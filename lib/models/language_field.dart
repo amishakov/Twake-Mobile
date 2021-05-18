@@ -7,9 +7,9 @@ part 'language_field.g.dart';
 @JsonSerializable()
 class LanguageField {
   LanguageField({
-    @required this.isReadonly,
-    @required this.value,
-    @required this.options,
+    required this.isReadonly,
+    required this.value,
+    required this.options,
   });
 
   @JsonKey(name: 'readonly', defaultValue: false)

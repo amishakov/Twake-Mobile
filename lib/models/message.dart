@@ -13,47 +13,47 @@ part 'message.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Message extends CollectionItem {
   @JsonKey(required: true)
-  String id;
+  String? id;
 
   @JsonKey(name: 'thread_id')
-  String threadId;
+  String? threadId;
 
   @JsonKey(name: 'responses_count', defaultValue: 0)
-  int responsesCount;
+  int? responsesCount;
 
   @JsonKey(ignore: true)
   String get respCountStr =>
       responsesCount == 0 ? 'No' : responsesCount.toString();
 
   @JsonKey(name: 'user_id')
-  final String userId;
+  final String? userId;
 
   @JsonKey(name: 'app_id')
-  final String appId;
+  final String? appId;
 
   @JsonKey(required: true, name: 'creation_date')
-  int creationDate;
+  int? creationDate;
 
   @JsonKey(required: true)
-  MessageTwacode content;
+  MessageTwacode? content;
 
   @JsonKey(defaultValue: [])
-  List<Map<String, dynamic>> reactions;
+  List<Map<String, dynamic>>? reactions;
 
   @JsonKey(required: true, name: 'channel_id')
-  String channelId;
+  String? channelId;
 
   @JsonKey(name: 'is_selected', defaultValue: 0)
-  int isSelected;
+  int? isSelected;
 
-  String username;
+  String? username;
   @JsonKey(name: 'firstname')
-  String firstName;
+  String? firstName;
   @JsonKey(name: 'lastname')
-  String lastName;
-  String thumbnail;
+  String? lastName;
+  String? thumbnail;
   @JsonKey(name: 'name')
-  String appName;
+  String? appName;
 
   @JsonKey(ignore: true)
   final _api = Api();
@@ -65,17 +65,17 @@ class Message extends CollectionItem {
   final _storage = Storage();
 
   int get key {
-    return (this.content.originalStr ?? '').hashCode +
-        this.reactions.map((r) => r['name']).join().hashCode +
-        this.reactions.fold(0, (acc, r) => acc + r['count']) +
-        this.id.hashCode;
+    return (this.content!.originalStr ?? '').hashCode +
+        this.reactions!.map((r) => r['name']).join().hashCode +
+        this.reactions!.fold(0, (acc, r) => acc + r['count']) +
+        this.id.hashCode as int;
   }
 
-  String get sender {
+  String? get sender {
     if (userId != null) {
-      return firstName.isNotEmpty
+      return firstName!.isNotEmpty
           ? '$firstName $lastName'
-          : username[0].toUpperCase() + username.substring(1);
+          : username![0].toUpperCase() + username!.substring(1);
     } else // message is sent by bot
       return appName;
   }
@@ -98,27 +98,27 @@ class Message extends CollectionItem {
 
   void updateContent(Map<String, dynamic> body) {
     logger.d('UPDATING MESSAGE CONTENT');
-    String prevStr = '' + content.originalStr;
-    content.originalStr = body['original_str'];
-    content.prepared = body['prepared'];
+    String prevStr = '' + content!.originalStr!;
+    content!.originalStr = body['original_str'];
+    content!.prepared = body['prepared'];
     _api.put(Endpoint.messages, body: body).then((_) => save()).catchError((e) {
       logger.e('ERROR updating message content\n$e');
-      content.originalStr = prevStr;
+      content!.originalStr = prevStr;
     });
   }
 
-  void updateReactions({String userId, Map<String, dynamic> body}) {
-    String emojiCode = body['reaction'];
+  void updateReactions({String? userId, required Map<String, dynamic> body}) {
+    String? emojiCode = body['reaction'];
     logger.d('Updating reaction: $emojiCode');
     if (emojiCode == null) return;
-    final oldReactions = List.from(reactions);
-    for (var r in reactions) {
+    final oldReactions = List.from(reactions!);
+    for (var r in reactions!) {
       final users = r['users'] as List;
       if (users.contains(userId)) {
         logger.d('Found userId: $users');
         users.remove(userId);
         r['count'] -= 1;
-        if (users.isEmpty) reactions.removeWhere((v) => v['name'] == r['name']);
+        if (users.isEmpty) reactions!.removeWhere((v) => v['name'] == r['name']);
         if (emojiCode == r['name']) {
           emojiCode = '';
           body['reaction'] = '';
@@ -126,8 +126,8 @@ class Message extends CollectionItem {
         break;
       }
     }
-    if (emojiCode.isNotEmpty) {
-      final r = reactions.firstWhere((r) => r['name'] == emojiCode,
+    if (emojiCode!.isNotEmpty) {
+      final r = reactions!.firstWhere((r) => r['name'] == emojiCode,
           orElse: () => {'name': emojiCode, 'users': [], 'count': 0});
       r['users'].add(userId);
       r['count'] += 1;
@@ -138,7 +138,7 @@ class Message extends CollectionItem {
       logger.d('Successfully updated reaction\n$reactions');
     }).catchError((_) {
       logger.e('Error updating reaction');
-      reactions = oldReactions;
+      reactions = oldReactions as List<Map<String, dynamic>>?;
     });
   }
 

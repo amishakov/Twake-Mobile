@@ -8,21 +8,21 @@ part 'company.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Company extends CollectionItem {
   @JsonKey(required: true)
-  final String id;
+  final String? id;
 
   @JsonKey(required: true)
-  final String name;
+  final String? name;
 
-  final String logo;
+  final String? logo;
 
   @JsonKey(name: 'total_members', defaultValue: 0)
-  final int totalMembers;
+  final int? totalMembers;
 
   @JsonKey(name: 'is_selected', defaultValue: 0)
-  int isSelected;
+  int? isSelected;
 
   @JsonKey(defaultValue: <String>[])
-  List<String> permissions;
+  List<String>? permissions;
 
   // @JsonKey(name: 'notification_rooms')
   // List<String> notificationRooms;

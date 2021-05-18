@@ -8,12 +8,12 @@ part of 'uploaded_file.dart';
 
 UploadedFile _$UploadedFileFromJson(Map<String, dynamic> json) {
   return UploadedFile(
-    id: json['id'] as String,
-    filename: json['name'] as String,
-    preview: json['preview'] as String,
-    download: json['download'] as String,
-    file: json['file'] as String,
-    size: json['size'] as int,
+    id: json['id'] as String?,
+    filename: json['name'] as String?,
+    preview: json['preview'] as String?,
+    download: json['download'] as String?,
+    file: json['file'] as String?,
+    size: json['size'] as int?,
   );
 }
 

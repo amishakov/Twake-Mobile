@@ -6,12 +6,12 @@ part 'language_option.g.dart';
 @JsonSerializable()
 class LanguageOption {
   LanguageOption({
-    @required this.value,
-    @required this.title,
+    required this.value,
+    required this.title,
   });
 
-  final String value;
-  final String title;
+  final String? value;
+  final String? title;
 
   factory LanguageOption.fromJson(Map<String, dynamic> json) =>
       _$LanguageOptionFromJson(json);

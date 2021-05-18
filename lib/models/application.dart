@@ -5,13 +5,13 @@ part 'application.g.dart';
 @JsonSerializable()
 class Application {
   @JsonKey(required: true)
-  final String id;
+  final String? id;
   @JsonKey(defaultValue: 'Unknown Bot')
-  String name;
+  String? name;
   @JsonKey(name: 'icon_url')
-  String iconUrl;
-  String description;
-  String website;
+  String? iconUrl;
+  String? description;
+  String? website;
 
   Application({this.id, this.name});
 

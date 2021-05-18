@@ -8,10 +8,10 @@ part 'direct.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Direct extends BaseChannel {
   @JsonKey(required: true, name: 'company_id')
-  final String companyId;
+  final String? companyId;
 
   @JsonKey(required: true)
-  List<String> members;
+  List<String>? members;
 
   Direct({this.companyId, this.members});
 

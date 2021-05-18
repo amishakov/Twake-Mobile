@@ -9,17 +9,17 @@ part of 'workspace.dart';
 Workspace _$WorkspaceFromJson(Map<String, dynamic> json) {
   $checkKeys(json, requiredKeys: const ['id', 'name', 'company_id']);
   return Workspace(
-    id: json['id'] as String,
-    companyId: json['company_id'] as String,
-    color: json['color'] as String,
-    userLastAccess: json['user_last_access'] as int,
+    id: json['id'] as String?,
+    companyId: json['company_id'] as String?,
+    color: json['color'] as String?,
+    userLastAccess: json['user_last_access'] as int?,
   )
-    ..name = json['name'] as String
-    ..logo = json['logo'] as String
-    ..totalMembers = json['total_members'] as int
-    ..isSelected = json['is_selected'] as int ?? 0
+    ..name = json['name'] as String?
+    ..logo = json['logo'] as String?
+    ..totalMembers = json['total_members'] as int?
+    ..isSelected = json['is_selected'] as int? ?? 0
     ..permissions =
-        (json['permissions'] as List)?.map((e) => e as String)?.toList() ?? [];
+        (json['permissions'] as List?)?.map((e) => e as String)?.toList() ?? [];
 }
 
 Map<String, dynamic> _$WorkspaceToJson(Workspace instance) => <String, dynamic>{
