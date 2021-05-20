@@ -1,11 +1,10 @@
-import 'dart:isolate';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:bubble/bubble.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:twake/blocs/base_channel_bloc/base_channel_bloc.dart';
 import 'package:twake/blocs/directs_bloc/directs_bloc.dart';
 import 'package:twake/blocs/draft_bloc/draft_bloc.dart';
@@ -24,10 +23,9 @@ import 'package:twake/utils/dateformatter.dart';
 import 'package:twake/utils/twacode.dart';
 import 'package:twake/widgets/common/reaction.dart';
 import 'package:twake/widgets/message/message_modal_sheet.dart';
-import './../../utils/notify.dart';
+import 'package:twake/utils/notify.dart';
 import 'package:open_file/open_file.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    as notify;
+
 
 final RegExp singleLineFeed = RegExp('(?<!\n)\n(?!\n)');
 
@@ -51,8 +49,10 @@ class _MessageTileState<T extends BaseChannelBloc>
     extends State<MessageTile<T>> {
   bool _hideShowAnswers;
   bool _shouldShowSender;
+  bool progressVisible = false;
   Message _message;
-  int progress = 0;
+  double _progress = 0;
+
 
   @override
   void initState() {
@@ -86,6 +86,26 @@ class _MessageTileState<T extends BaseChannelBloc>
     }
     if (oldWidget.message != widget.message) {
       _message = widget.message;
+    }
+  }
+
+  onNotificationClick(String payloadPath) async {
+    //print('payloadPath $payloadPath');
+    if (Platform.isAndroid) {
+      OpenFile.open(payloadPath);
+    }
+    if (Platform.isIOS) {
+      OpenFile.open("$payloadPath");
+    }
+  }
+
+  void _onReceiveProgress(int received, int total) {
+    if (total != -1) {
+      setState(() {
+        _progress = (received / total);
+        print(_progress);
+        progressVisible = true;
+      });
     }
   }
 
@@ -254,16 +274,26 @@ class _MessageTileState<T extends BaseChannelBloc>
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   SizedBox(height: _isMyMessage ? 0.0 : 4.0),
-                                  TwacodeRenderer(
-                                    twacode: messageState.content,
-                                    parentStyle: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: _isMyMessage
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ).message,
+                                  Stack(children: <Widget>[
+                                    progressVisible
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[buildProgress()])
+                                        : SizedBox.shrink(),
+                                    TwacodeRenderer(
+                                      //  progress: _progress,
+                                      onReceiveProgress: _onReceiveProgress,
+                                      twacode: messageState.content,
+                                      parentStyle: TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: _isMyMessage
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ).message
+                                  ]),
 
                                   // Normally we use SizedBox here,
                                   // but it will cut the bottom of emojis
@@ -329,5 +359,35 @@ class _MessageTileState<T extends BaseChannelBloc>
         },
       ),
     );
+  }
+
+  Widget buildProgress() {
+    if (_progress == 1) {
+      return Icon(
+        Icons.arrow_circle_down_rounded,
+        color: Colors.grey,
+      );
+    } else {
+      return CircularProgressIndicator(
+        value: _progress,
+        valueColor: AlwaysStoppedAnimation(Colors.white70),
+        backgroundColor: Colors.grey,
+      );
+    }
+  }
+
+  Widget buildProgressTest() {
+    if (_progress == 1) {
+      return Icon(
+        Icons.arrow_circle_down_rounded,
+        color: Colors.grey,
+      );
+    } else {
+      return CircularProgressIndicator(
+        value: _progress,
+        valueColor: AlwaysStoppedAnimation(Colors.white70),
+        backgroundColor: Colors.grey,
+      );
+    }
   }
 }

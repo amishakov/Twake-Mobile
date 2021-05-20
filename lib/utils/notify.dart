@@ -25,7 +25,7 @@ class NotificationPlugin {
 
   initializePlatformSpecifics() {
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('ic_notification');
     var initializationSettingsIOS = IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -67,7 +67,8 @@ class NotificationPlugin {
     });
   }
 
-  Future<void> showNotification() async {
+  Future<void> showNotification(
+      Map<String, String> payload, bool isErr, String err) async {
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -81,19 +82,14 @@ class NotificationPlugin {
     var iosChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidChannelSpecifics, iOS: iosChannelSpecifics);
+    
     await flutterLocalNotificationsPlugin.show(
       0,
-      'Test Title',
-      'Test Body', //null
+      isErr ? ' downloading failed' : payload['title'],
+      payload['body'], //null
       platformChannelSpecifics,
-      payload: "test",
+      payload: payload['payload'], //null
     );
-  }
-
-  Future<int> getPendingNotificationCount() async {
-    List<PendingNotificationRequest> p =
-        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    return p.length;
   }
 
   Future<void> cancelNotification() async {

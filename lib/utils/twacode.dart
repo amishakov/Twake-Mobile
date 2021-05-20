@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tuple/tuple.dart';
@@ -14,8 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:twake/services/service_bundle.dart';
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:open_file/open_file.dart';
 import 'notify.dart';
 
 final RegExp idMatch = RegExp(':([a-zA-z0-9-]+)');
@@ -575,11 +572,14 @@ class Delim {
 class TwacodeRenderer {
   List<dynamic> twacode;
   List<InlineSpan> spans;
+  Function onReceiveProgress;
 
-  TwacodeRenderer({this.twacode, TextStyle parentStyle}) {
+  TwacodeRenderer(
+      {this.twacode, TextStyle parentStyle, this.onReceiveProgress}) {
     if (parentStyle == null)
       parentStyle = getStyle(TType.Text).copyWith(color: Colors.black);
     this.twacode.addAll(this.extractFiles(this.twacode));
+
     spans = render(twacode: this.twacode, parentStyle: parentStyle);
   }
 
@@ -712,7 +712,10 @@ class TwacodeRenderer {
     );
   }
 
-  List<InlineSpan> render({List<dynamic> twacode, TextStyle parentStyle}) {
+  List<InlineSpan> render({
+    List<dynamic> twacode,
+    TextStyle parentStyle,
+  }) {
     List<InlineSpan> spans = [];
 
     for (int i = 0; i < twacode.length; i++) {
@@ -957,6 +960,7 @@ class TwacodeRenderer {
               getStyle(type),
             ),
           );
+
           final widget = Container(
             margin: EdgeInsets.all(4),
             padding: EdgeInsets.all(3),
@@ -971,17 +975,51 @@ class TwacodeRenderer {
                         final Dio dio = Dio();
                         final dir = await getExternalStorageDirectory();
                         final dir2 = path.join(dir.path, t['metadata']['name']);
+                        final Map<String, String> payload = {
+                          'title':
+                              '${t['metadata']['name']} downloaded successfully',
+                          'Body': t['metadata']['name'],
+                          'payload': dir2,
+                        };
+                        bool isErr = false;
+                        String err;
 
-                        dio.download(
-                            Api.host + t['metadata']['download'], dir2);
-                        await notificationPlugin.showNotification();
+                        try {
+                          await dio.download(
+                              Api.host + t['metadata']['download'], dir2,
+                              onReceiveProgress: onReceiveProgress);
+                        } catch (exeption) {
+                          isErr = true;
+                          err = exeption.toString();
+                        } finally {
+                          await notificationPlugin.showNotification(
+                              payload, isErr, err);
+                        }
                       } else if (Platform.isIOS) {
                         final Dio dio = Dio();
                         final dir = await getApplicationSupportDirectory();
-                        final dir2 = path.join(dir.path, t['metadata']['name']);
-                        dio.download(
-                            Api.host + t['metadata']['download'], dir2);
-                        await notificationPlugin.showNotification();
+                        final dir2 =
+                            path.join("${dir.path}", t['metadata']['name']);
+                        final Map<String, String> payload = {
+                          'title':
+                              '${t['metadata']['name']} downloaded successfully',
+                          'Body': t['metadata']['name'],
+                          'payload': dir2
+                        };
+                        bool isErr = false;
+                        String err;
+
+                        try {
+                          await dio.download(
+                              Api.host + t['metadata']['download'], dir2,
+                              onReceiveProgress: onReceiveProgress);
+                        } catch (exeption) {
+                          isErr = true;
+                          err = exeption.toString();
+                        } finally {
+                          await notificationPlugin.showNotification(
+                              payload, isErr, err);
+                        }
                       }
                     } else {
                       // TODO: implementation needed
@@ -991,20 +1029,15 @@ class TwacodeRenderer {
                 child: SizedBox(
                   child: t['metadata']['preview'] != null
                       ? ClipRRect(
-                          child: Image.network(t['metadata']['preview']),
+                          child: Image.network(
+                              Api.host + t['metadata']['preview']),
                           borderRadius: BorderRadius.all(Radius.circular(8)))
-                      : CircleAvatar(
-                          child: Icon(Icons.cloud_download),
-                          backgroundColor: Colors.indigo[100],
-                          // TODO: implementation needed to show progres
-                          /*CircularProgressIndicator(
-                          backgroundColor: Colors.blueGrey,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.lightBlue),
-                          value: progres.toDouble(),*/
+                      : Icon(
+                          Icons.insert_drive_file_rounded,
+                          color: (parentStyle.color == Colors.white)
+                              ? Color(0xff8e8e93)
+                              : Color(0xffffffff).withOpacity(0.58),
                         ),
-
-                  // ),
                   width: 40,
                   height: 40,
                 ),
